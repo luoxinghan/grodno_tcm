@@ -9,25 +9,36 @@ let lastScrollY = 0;
 
 class Header extends Component {
     render() {
-        const {isHide} = this.props;
+        const {isHide, selectedKey, handleChangeKey} = this.props;
         return (
             <HeaderWrapper>
                 <NavMenu isHide={isHide}>
                     <NavLogo/>
                     <Menu
                         mode="horizontal"
-                        defaultSelectedKeys={['1']}
+                        defaultSelectedKeys={[selectedKey+""]}
                         style={{ lineHeight: '64px' }}
                     >
-                        <Menu.Item key="1"> <Link to="/">首页</Link></Menu.Item>
-                        <Menu.Item key="2"><Link to="/hospital_intro">医院简介</Link></Menu.Item>
-                        <Menu.Item key="3"><Link to="/center_intro">中心简介</Link></Menu.Item>
-                        <Menu.Item key="4"><Link to="/learn_ctm">了解中医</Link></Menu.Item>
-                        <Menu.Item key="5"><Link to="/massage">小儿推拿</Link></Menu.Item>
+                        <Menu.Item onClick={handleChangeKey} key="1"><Link to="/">首页</Link></Menu.Item>
+                        <Menu.Item onClick={handleChangeKey} key="2"><Link to="/hospital_intro">医院简介</Link></Menu.Item>
+                        <Menu.Item onClick={handleChangeKey} key="3"><Link to="/center_intro">中心简介</Link></Menu.Item>
+                        <Menu.Item onClick={handleChangeKey} key="4"><Link to="/learn_ctm">了解中医</Link></Menu.Item>
+                        <Menu.Item onClick={handleChangeKey} key="5"><Link to="/massage">小儿推拿</Link></Menu.Item>
                     </Menu>
                 </NavMenu>
-                <NavArea>
+                <NavArea isHide={isHide}>
                     <PureLogo/>
+                    <Menu
+                        mode="horizontal"
+                        defaultSelectedKeys={[selectedKey+""]}
+                        style={{ lineHeight: '64px' }}
+                    >
+                        <Menu.Item onClick={handleChangeKey} key="1"> <Link to="/">首页</Link></Menu.Item>
+                        <Menu.Item onClick={handleChangeKey} key="2"><Link to="/hospital_intro">医院简介</Link></Menu.Item>
+                        <Menu.Item onClick={handleChangeKey} key="3"><Link to="/center_intro">中心简介</Link></Menu.Item>
+                        <Menu.Item onClick={handleChangeKey} key="4"><Link to="/learn_ctm">了解中医</Link></Menu.Item>
+                        <Menu.Item onClick={handleChangeKey} key="5"><Link to="/massage">小儿推拿</Link></Menu.Item>
+                    </Menu>
                 </NavArea>
             </HeaderWrapper>
         );
@@ -53,7 +64,8 @@ class Header extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isHide: state.get("header").get("isHide")
+        isHide: state.get("header").get("isHide"),
+        selectedKey: state.get("header").get("selectedKey")
         // isLogged: state.get("login").get("isLogged"),
         // currentUser: state.get("login").get("currentUser")
     };
@@ -69,6 +81,10 @@ const mapDispatchToProps = (dispatch) => {
             } else if (lastScrollY > 80){
                 dispatch(actionCreators.hideTheNav())
             }
+        },
+        handleChangeKey(event){
+            console.log(event.key);
+            dispatch(actionCreators.changeTheSelectedKey(event.key))
         }
     }
 };
